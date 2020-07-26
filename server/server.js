@@ -1,5 +1,9 @@
 require('./config/config');
 const express = require('express')
+    // Using Node.js `require()`
+const mongoose = require('mongoose');
+
+
 var bodyParser = require('body-parser')
 const app = express()
 
@@ -9,30 +13,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use(require('./routes/usuario'));
 
-app.get('/usuario', function(req, res) {
-    res.send('get Usuario')
-})
-app.post('/usuario', function(req, res) {
-    let body = req.body;
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'el nombre es necesario'
-        });
-    } else {
-        res.send({ persona: body })
-    }
-})
 
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id;
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 
-    res.json({
-        id,
-        usuario: 'post Usuario'
-    });
-})
+mongoose.connect(process.env.URLDB, { useUnifiedTopology: true, useNewUrlParser: true, }, (err, res) => {
+    if (err) throw err;
+    console.log('Base de datos ONLINE');
+
+});
 
 app.listen(process.env.PORT, () => {
     console.log("Escuchando puerto : ", process.env.PORT);
