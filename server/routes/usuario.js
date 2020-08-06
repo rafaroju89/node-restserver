@@ -5,13 +5,14 @@ const Usuario = require('../models/usuario')
 const app = express()
 
 app.get('/usuario', function(req, res) {
-    console.log("HOLA");
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
     let limite = req.query.limite || 5;
     limite = Number(limite);
+    console.log(desde);
+    console.log(limite);
 
     Usuario.find({ estado: true }, 'nombre email imagen estado role google')
         .skip(desde)
@@ -24,7 +25,7 @@ app.get('/usuario', function(req, res) {
                 })
             }
 
-            Usuario.count({ estado: false }, (err, conteo) => {
+            Usuario.count({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     usuarios,
