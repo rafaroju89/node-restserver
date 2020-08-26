@@ -100,7 +100,7 @@ app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, re
     let cambiaEstado = {
         estado: false
     }
-    console.log(id);
+
 
 
 
